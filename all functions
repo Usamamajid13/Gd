@@ -1,0 +1,239 @@
+Completed Paper Codes
+
+Ball Game Quiz Number 2
+
+using UnityEngine;
+using System.Collections;
+
+public class ChangePosition : MonoBehaviour
+{
+      Rigidbody rb;
+    public int speed = 1;
+
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+
+    private void Update()
+    {
+        rb.velocity = new Vector3(Input.GetAxis("Horizontal") * speed/10, 0, Input.GetAxis("Vertical") * speed/10);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        GetComponent<MeshRenderer>().material.color = other.gameObject.GetComponent<MeshRenderer>().material.color;
+    }
+
+}
+
+
+Destroyoutofbound
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class DestroyOutofBounds : MonoBehaviour
+{
+    private float zBound = 5f;
+    
+    // Update is called once per frame
+    void Update()
+    {
+        if(transform.position.z>zBound)
+        {
+            Destroy(gameObject);
+        }
+        else if(transform.position.z < -zBound)
+        {
+            Destroy(gameObject);
+        }
+    }
+   private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("On Trigger function Enter");
+        Destroy(gameObject);
+    }
+}
+
+
+MoveScript
+public class MoveScript : MonoBehaviour
+{
+public float speed = 5f;
+float leftBound = -53.7f;
+    void Update()
+    {
+        transform.Translate(Vector3.left*speed*Time.deltaTime);
+        if(transform.position.x < leftBound && gameObject.CompareTag("Obstacle"))
+        {
+            Destroy(gameObject);
+        }
+    }
+}
+
+
+Subject: PlayerControl
+
+public class PlayerControl : MonoBehaviour
+{
+    Rigidbody rb;
+    Animator anim;
+    bool isGrounded = true;
+    public float force = 10f;
+     
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
+    }
+
+     void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space)&& isGrounded)
+        {
+            rb.AddForce(Vector3.up*force,ForceMode.Impulse);
+            isGrounded = false;
+            anim.SetBool("isJumping", true);
+        }
+        else if(isGrounded)
+        {
+            anim.SetBool("isJumping",false);
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        isGrounded = true;
+    }
+}
+
+
+Subject: move script
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class MoveScript : MonoBehaviour
+{
+public float speed = 5f;
+float leftBound = -53.7f;
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        transform.Translate(Vector3.left*speed*Time.deltaTime);
+        if(transform.position.x < leftBound && gameObject.CompareTag("Obstacle"))
+        {
+            Destroy(gameObject);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+Subject: repeat background
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class RepeatBackground : MonoBehaviour
+{
+    Vector3 startingPos;
+    float size;
+    // Start is called before the first frame update
+    void Start()
+    {
+        startingPos = transform.position;
+        size = GetComponent<BoxCollider>().size.x / 2;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(transform.position.x < startingPos.x - size)
+        {
+            transform.position = startingPos;
+        }
+    }
+}
+
+
+
+Subject: Fwd:
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SpawnManager : MonoBehaviour
+{
+    private float delay = 2f, repeat = 5f;
+    Vector3 Spawn = new Vector3(-35, -6, -6);
+    public GameObject obj;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        InvokeRepeating("SpawnObject", delay, repeat);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+
+    }
+
+    void SpawnObject()
+    {
+        Instantiate(obj, Spawn, obj.transform.rotation);
+    }
+}
+
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SpwanManager : MonoBehaviour
+{
+    public GameObject animalPrefab;
+    private float delay = 2f, interval = 1.5f;
+   
+   // Start is called before the first frame update
+    void Start()
+    {
+        InvokeRepeating("SpwanAnimal", delay, interval);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+       
+     
+    }
+    
+    private void SpwanAnimal()
+    {
+        Vector3 Spwan = new Vector3(88.65f, 0.57f, 5.33f);
+        Instantiate(animalPrefab, Spwan, animalPrefab.transform.rotation);
+    }
+}
